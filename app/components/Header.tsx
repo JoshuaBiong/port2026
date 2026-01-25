@@ -26,7 +26,7 @@ export default function Header({ onBack }: HeaderProps) {
             )}
             
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 flex items-center justify-center rounded-md bg-foreground text-background font-semibold text-xs">
+              <div className="w-7 h-7 flex items-center justify-center rounded-full border  border-black text-black font-bold text-xs">
                 JB
               </div>
               <span className="font-medium text-foreground text-sm">Joshua Biong</span>

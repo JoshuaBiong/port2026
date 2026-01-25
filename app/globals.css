@@ -123,3 +123,18 @@ body {
   animation: shimmer 2s infinite linear;
 }
 
+@keyframes bounce-noticeable {
+  0%, 100% {
+    transform: translateY(-4px);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce-noticeable {
+  animation: bounce-noticeable 0.6s infinite;
+}
+
