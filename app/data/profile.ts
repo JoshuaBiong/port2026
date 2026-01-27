@@ -120,6 +120,7 @@ export const profileData = {
     { category: "Styling", items: ["Tailwind CSS", "Framer Motion", "SASS/SCSS", "Shadcn UI"] },
     { category: "Tools", items: ["Git/GitHub", "Figma", "Vercel", "VS Code"] },
   ],
+  techStackQuote: "I believe in choosing the right tool for the job, prioritizing performance, accessibility, and developer experience.",
   faqs: [
     {
       question: "What does Joshua Biong do?",
@@ -139,7 +140,7 @@ export const profileData = {
     },
     {
       question: "What is Joshua's tech stack?",
-      answer: "He primarily works with TypeScript, React, Next.js, and Tailwind CSS. He's also experienced with various frontend tools and state management libraries."
+      answer: "He encounter various tech stack such as Nextjs, React, Nuxtjs, Laravel, Inertiajs, Cloudflare R2, Docker but he is mainly a diving to Shopify now."
     }
   ],
   featuredBlogIds: ['learning-in-age-of-ai', 'scalable-ui-components']

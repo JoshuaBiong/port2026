@@ -48,7 +48,7 @@ export default function TechStackAnswer() {
       </div>
       
       <motion.div variants={itemVariants} className="bg-background-secondary rounded-xl p-4 border border-border text-sm text-foreground-muted italic text-center">
-        "I believe in choosing the right tool for the job, prioritizing performance, accessibility, and developer experience."
+        "{profileData.techStackQuote}"
       </motion.div>
     </motion.div>
   );
