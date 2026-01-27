@@ -34,14 +34,24 @@ export const profileData = {
       platform: "linkedin"
     },
     {
-      label: "Twitter",
-      url: "https://twitter.com/joshuabiong",
+      label: "X",
+      url: "https://x.com/joshuabiong",
       platform: "twitter"
     },
     {
-      label: "GitHub",
-      url: "https://github.com/joshuabiong",
-      platform: "github"
+      label: "Threads",
+      url: "#",
+      platform: "threads"
+    },
+    {
+      label: "Facebook",
+      url: "#",
+      platform: "facebook"
+    },
+    {
+      label: "Instagram",
+      url: "#",
+      platform: "instagram"
     }
   ],
   gallery: [
@@ -134,7 +144,7 @@ export const profileData = {
   faqs: [
     {
       question: "What does Joshua Biong do?",
-      answer: "Joshua is a software engineer specializing in frontend development. He builds modern, responsive, and performance-optimized web applications using React, Next.js, and Tailwind CSS."
+      answer: "Joshua is a tech enthusiast specializing in frontend development. He builds modern, responsive, and performance-optimized web applications using React, Next.js, Laravel, Inertia.js, MySQL, and Tailwind CSS. In his spare time, he likes to tinker with Shopify. \n  But in the Philippines, most people he knows he just an IT guy that can repair your printer, phone, aircon, washing machine or hack Facebook account of their love ones."
     },
     {
       question: "What is Devignlabs?",

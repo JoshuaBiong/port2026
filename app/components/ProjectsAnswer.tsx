@@ -99,7 +99,7 @@ export default function ProjectsAnswer() {
       
       <motion.div variants={itemVariants} className="text-center pt-8">
         <p className="text-foreground-muted text-sm border-t border-border pt-8 mt-4">
-            More experiments available on <a href="https://github.com/joshuabiong" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-bold">GitHub</a>
+            Projects that are funny on <a href="https://github.com/joshuabiong" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-bold">GitHub</a>
         </p>
       </motion.div>
     </motion.div>

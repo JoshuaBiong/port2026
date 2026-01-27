@@ -97,7 +97,7 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
   return (
     <>
       <motion.div
-        className="w-full max-w-2xl mx-auto space-y-8 py-6"
+        className="w-full max-w-2xl mx-auto h-auto space-y-8 py-6"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -256,15 +256,35 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
           </div>
         </motion.div>
 
-        {/* Bubble Question that has Books, Tech Stack or any available information I have to make the user have an idea to ask */}
 
-        <motion.div>
-          
+           {/* Follow-up Suggestions */}
+        <motion.div 
+          className="space-y-4 pt-2  "
+          variants={itemVariants}
+        >
+          <p className="text-xs font-bold uppercase tracking-widest text-foreground-muted ml-0.5">Explore more</p>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+            {[
+              "What's in his tech stack?",
+              "Show me his projects",
+              "What books does he recommend?",
+              "Tell me more about Devignlabs"
+            ].map((question, i) => (
+              <button
+                key={i}
+                onClick={() => onQuestionClick?.(question)}
+                className="whitespace-nowrap px-4 py-2 rounded-full border border-border bg-bubble-bg text-sm font-medium text-foreground hover:border-accent/40 hover:bg-bubble-hover transition-all active:scale-95 shrink-0"
+              >
+                {question}
+              </button>
+            ))}
+          </div>
         </motion.div>
+     
 
 
         {/* Connect Section */}
-        <motion.div className="space-y-4 pt-4" variants={itemVariants}>
+        <motion.div className="space-y-4 pt-4 " variants={itemVariants}>
           <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Connect</h3>
           <div className="flex flex-wrap gap-4">
             {profileData.socialLinks.map((link, index) => (
@@ -278,7 +298,10 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
                     whileTap={{ scale: 0.95 }}
                 >
                     {link.platform === 'linkedin' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>}
-                    {link.platform === 'twitter' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>}
+                    {link.platform === 'twitter' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768m2.464-2.464L20 4"/></svg>}
+                    {link.platform === 'threads' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19.25 20.25c-2.415 1.57-5.594 1.777-7.25.25-1.656-1.527-1.85-4.708-2.625-5.25C8.6 14.7 7.7 15.5 7.7 18.2c0 2.2 1.5 3.1 3.2 3.1 1.6 0 3.3-1.1 3.3-3.1 0-2.4-1.7-3.9-3.7-3.9-2.3 0-3.9 1.5-3.9 3.9 0 2.1 1.4 3.7 3.5 3.7 1.5 0 2.8-.8 3.3-2.1"/><path d="M2.5 12.5c0-5.247 4.253-9.5 9.5-9.5s9.5 4.253 9.5 9.5c0 5.246-4.253 9.5-9.5 9.5-2.023 0-3.896-.632-5.432-1.714"/></svg>}
+                    {link.platform === 'facebook' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>}
+                    {link.platform === 'instagram' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>}
                     {link.platform === 'github' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>}
                     {link.label}
                 </motion.a>
