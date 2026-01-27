@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
+import { profileData } from '../data/profile';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -17,16 +18,6 @@ function ImageSkeleton() {
     <div className="absolute inset-0 bg-gradient-to-r from-bubble-bg via-border to-bubble-bg bg-[length:200%_100%] animate-shimmer rounded-2xl" />
   );
 }
-
-// Dummy Images for Gallery
-const galleryImages = [
-  { url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop', label: 'Main Portrait' },
-  { url: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1000&auto=format&fit=crop', label: 'Workspace' },
-  { url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop', label: 'Coding' },
-  { url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop', label: 'Development' },
-  { url: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=1000&auto=format&fit=crop', label: 'Frontend' },
-  { url: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1000&auto=format&fit=crop', label: 'Collab' },
-];
 
 // Stagger animation variants
 const containerVariants = {
@@ -112,12 +103,12 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
       >
         {/* Header Info */}
         <motion.div className="space-y-1" variants={itemVariants}>
-          <h1 className="text-3xl font-bold text-foreground">Joshua Biong</h1>
-          <p className="text-lg text-foreground-muted">Software Engineer + Frontend Developer</p>
+          <h1 className="text-3xl font-bold text-foreground">{profileData.name}</h1>
+          <p className="text-lg text-foreground-muted">{profileData.title}</p>
         </motion.div>
 
         {/* Image Gallery - Forced Grid on all sizes */}
-        <motion.div className="grid grid-cols-3 gap-2 md:gap-4 h-[220px] md:h-[300px]" variants={itemVariants}>
+        <motion.div className="grid grid-cols-3  gap-2 md:gap-4 h-auto" variants={itemVariants}>
           {/* Main Image */}
           <div 
             className="col-span-2 bg-bubble-bg rounded-xl md:rounded-2xl overflow-hidden relative border border-border cursor-pointer group transition-colors"
@@ -125,8 +116,8 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
           >
             {!imagesLoaded[0] && <ImageSkeleton />}
             <img 
-              src={galleryImages[0].url} 
-              alt={galleryImages[0].label}
+              src={profileData.gallery[0].url} 
+              alt={profileData.gallery[0].label}
               className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${imagesLoaded[0] ? 'opacity-100' : 'opacity-0'}`}
               onLoad={() => handleImageLoad(0)}
             />
@@ -140,8 +131,8 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
             >
               {!imagesLoaded[1] && <ImageSkeleton />}
               <img 
-                src={galleryImages[1].url} 
-                alt={galleryImages[1].label}
+                src={profileData.gallery[1].url} 
+                alt={profileData.gallery[1].label}
                 className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${imagesLoaded[1] ? 'opacity-100' : 'opacity-0'}`}
                 onLoad={() => handleImageLoad(1)}
               />
@@ -153,16 +144,16 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
             >
               {!imagesLoaded[2] && <ImageSkeleton />}
               <img 
-                src={galleryImages[2].url} 
-                alt={galleryImages[2].label}
+                src={profileData.gallery[2].url} 
+                alt={profileData.gallery[2].label}
                 className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${imagesLoaded[2] ? 'opacity-100' : 'opacity-0'}`}
                 onLoad={() => handleImageLoad(2)}
               />
-              {galleryImages.length > 3 && (
+              {profileData.gallery.length > 3 && (
                 <div className="absolute inset-0 bg-foreground/30 flex items-end justify-end pb-2 pr-2 opacity-100 transition-opacity group-hover:bg-foreground/20">
                     <div className="bg-background/20 backdrop-blur-md px-2 py-1 md:px-3 md:py-1.5 rounded-full flex items-center gap-1 md:gap-2 border border-white/30 text-white">
                         <svg className="w-3.5 h-3.5 md:w-4 md:h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                        <span className="text-xs md:text-sm font-bold">{galleryImages.length - 3}</span>
+                        <span className="text-xs md:text-sm font-bold">{profileData.gallery.length - 3}</span>
                     </div>
                 </div>
               )}
@@ -173,9 +164,7 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
         {/* Bio Section */}
         <motion.div className="space-y-4" variants={itemVariants}>
           <p className="text-foreground leading-relaxed">
-            <strong>Joshua Biong</strong> is a passionate <strong>Software Engineer</strong> specializing in <strong>Frontend Development</strong>. 
-            He focuses on building premium, high-performance web applications with a keen eye for aesthetics and user experience.
-            Currently based in the Philippines, he explores the latest web technologies to craft seamless digital products.
+            <strong>{profileData.name}</strong> {profileData.bio}
           </p>
         </motion.div>
 
@@ -183,20 +172,15 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
         <motion.div className="space-y-4" variants={itemVariants}>
           <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Current Roles</h3>
           <ul className="space-y-4">
-            <motion.li className="flex gap-4" variants={itemVariants}>
-              <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2.5 shrink-0" />
-              <div>
-                <p className="font-semibold text-foreground">Devignlabs — Frontend Developer</p>
-                <p className="text-sm text-foreground-muted">Working on innovative design systems and high-fidelity web experiences.</p>
-              </div>
-            </motion.li>
-            <motion.li className="flex gap-4" variants={itemVariants}>
-              <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2.5 shrink-0" />
-              <div>
-                <p className="font-semibold text-foreground">Freelance — Software Engineer</p>
-                <p className="text-sm text-foreground-muted">Building custom solutions for early-stage startups and creative businesses.</p>
-              </div>
-            </motion.li>
+            {profileData.roles.map((role, index) => (
+                <motion.li key={index} className="flex gap-4" variants={itemVariants}>
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2.5 shrink-0" />
+                    <div>
+                        <p className="font-semibold text-foreground">{role.company} — {role.title}</p>
+                        <p className="text-sm text-foreground-muted">{role.description}</p>
+                    </div>
+                </motion.li>
+            ))}
           </ul>
         </motion.div>
 
@@ -277,33 +261,22 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
         <motion.div className="space-y-4 pt-4" variants={itemVariants}>
           <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Connect</h3>
           <div className="flex flex-wrap gap-4">
-            <motion.a
-              href="#"
-              className="flex items-center gap-2 text-foreground-muted hover:text-accent font-medium text-sm transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-              LinkedIn
-            </motion.a>
-            <motion.a
-              href="#"
-              className="flex items-center gap-2 text-foreground-muted hover:text-accent font-medium text-sm transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
-              Twitter
-            </motion.a>
-            <motion.a
-              href="#"
-              className="flex items-center gap-2 text-foreground-muted hover:text-accent font-medium text-sm transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-              GitHub
-            </motion.a>
+            {profileData.socialLinks.map((link, index) => (
+                <motion.a
+                    key={index}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-foreground-muted hover:text-accent font-medium text-sm transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                >
+                    {link.platform === 'linkedin' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>}
+                    {link.platform === 'twitter' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>}
+                    {link.platform === 'github' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>}
+                    {link.label}
+                </motion.a>
+            ))}
           </div>
         </motion.div>
       </motion.div>
@@ -330,12 +303,12 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
 
               {/* Static Navigation Info */}
               <div className="absolute bottom-12 left-0 right-0 z-[120] flex flex-col items-center gap-3 pointer-events-none px-6">
-                <p className="text-foreground font-semibold text-xl drop-shadow-sm text-center">
-                  {galleryImages[currentSlideIndex].label}
+                <p className="text-foreground font-thin text-sm italic drop-shadow-sm text-center">
+                  {profileData.gallery[currentSlideIndex].label}
                 </p>
                 <div className="bg-foreground/10 px-4 py-1.5 rounded-full backdrop-blur-xl border border-border flex items-center justify-center shadow-sm">
                     <span className="text-xs text-foreground uppercase font-bold tracking-widest">
-                      {currentSlideIndex + 1} / {galleryImages.length}
+                      {currentSlideIndex + 1} / {profileData.gallery.length}
                     </span>
                 </div>
               </div>
@@ -354,7 +327,7 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
                   className="w-full h-full mySwiper"
                   onSlideChange={(swiper) => setCurrentSlideIndex(swiper.realIndex)}
                 >
-                  {galleryImages.map((image, index) => (
+                  {profileData.gallery.map((image, index) => (
                     <SwiperSlide key={index} className="flex items-center justify-center px-4">
                       <div className="relative w-full h-[60vh] md:h-[75vh] flex items-center justify-center">
                         <img 
