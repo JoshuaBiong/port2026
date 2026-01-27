@@ -74,34 +74,34 @@ export const profileData = {
   ],
   projects: [
     {
-      title: "Devign UI",
-      description: "A premium headless UI library built for React and Framer Motion, focusing on buttery-smooth interactions and accessibility.",
-      stack: ["React", "Tailwind", "Framer Motion", "TypeScript"],
-      url: "https://devign-ui.com",
-      github: "https://github.com/joshuabiong/devign-ui",
-      category: "Open Source",
+      title: "Subay App",
+      description: "Subay is a private interal file system tool for a team to organize and manage files.",
+      stack: ["React", "Tailwind", "Laravel", "Inertia.js", "MySQL", "Cloudflare R2"],
+      url: "",
+      github: "",
+      category: "Internal Tool",
+      isFlagship: false,
+      image: "/projects/Subay.png"
+    },
+    {
+      title: "Solve50",
+      description: "Solve50, a chrome extension designed to be simple on breaking down problems and track progress.",
+      stack: ["Manifest V3", "React", "Tailwind"],
+      url: "https://solve50.vercel.app",
+      github: "",
+      category: "Chrome Extension",
+      isFlagship: false,
+      image: "/projects/solve50.png"
+    },
+    {
+      title: "Personal Portfolio",
+      description: "A ChatGPT like interface for my portfolio",
+      stack: ["Next.js", "Tailwind", "Framer Motion"],
+      url: "https://joshuabiong.com",
+      github: "https://github.com/joshuabiong/port",
+      category: "Web App",
       isFlagship: true,
-      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop"
-    },
-    {
-      title: "EcoTask",
-      description: "Collaborative task management platform with built-in productivity analytics and carbon footprint tracking for remote teams.",
-      stack: ["Next.js", "Prisma", "PostgreSQL", "Supabase"],
-      url: "https://ecotask.app",
-      github: "https://github.com/joshuabiong/ecotask",
-      category: "Web App",
-      isFlagship: false,
-      image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=1000&auto=format&fit=crop"
-    },
-    {
-      title: "SwiftChat",
-      description: "A secure, real-time messaging application with end-to-end encryption and custom emoji Support.",
-      stack: ["WebSocket", "Redux", "Node.js", "Express"],
-      url: "https://swiftchat.io",
-      github: "https://github.com/joshuabiong/swiftchat",
-      category: "Web App",
-      isFlagship: false,
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop"
+      image: "/projects/port.png"
     }
   ],
   devignlabs: {
@@ -119,5 +119,28 @@ export const profileData = {
     { category: "Frameworks", items: ["React.js", "Next.js", "Vue.js"] },
     { category: "Styling", items: ["Tailwind CSS", "Framer Motion", "SASS/SCSS", "Shadcn UI"] },
     { category: "Tools", items: ["Git/GitHub", "Figma", "Vercel", "VS Code"] },
-  ]
+  ],
+  faqs: [
+    {
+      question: "What does Joshua Biong do?",
+      answer: "Joshua is a software engineer specializing in frontend development. He builds modern, responsive, and performance-optimized web applications using React, Next.js, and Tailwind CSS."
+    },
+    {
+      question: "What is Devignlabs?",
+      answer: "Devignlabs is where Joshua currently works as a Frontend Developer, contributing to cutting-edge web projects and design system implementations."
+    },
+    {
+      question: "What projects has Joshua worked on?",
+      answer: "Joshua has worked on a variety of web applications, ranging from landing pages to complex dashboard interfaces. His most recent projects include Subay App, Solve50, and this Personal Portfolio."
+    },
+    {
+      question: "How can I contact Joshua Biong?",
+      answer: "contact_links"
+    },
+    {
+      question: "What is Joshua's tech stack?",
+      answer: "He primarily works with TypeScript, React, Next.js, and Tailwind CSS. He's also experienced with various frontend tools and state management libraries."
+    }
+  ],
+  featuredBlogIds: ['learning-in-age-of-ai', 'scalable-ui-components']
 };

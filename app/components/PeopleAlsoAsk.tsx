@@ -1,38 +1,34 @@
 'use client';
 
 import { useState } from 'react';
-
-const faqs = [
-  {
-    question: "What does Joshua Biong do?",
-    answer: "Joshua is a software engineer specializing in frontend development. He builds modern, responsive, and performance-optimized web applications using React, Next.js, and Tailwind CSS."
-  },
-  {
-    question: "What is Devignlabs?",
-    answer: "Devignlabs is where Joshua currently works as a Frontend Developer, contributing to cutting-edge web projects and design system implementations."
-  },
-  {
-    question: "What projects has Joshua worked on?",
-    answer: "Joshua has worked on a variety of web applications, ranging from landing pages to complex dashboard interfaces. He is currently preparing a showcase of his recent work—stay tuned for updates in the Projects section!"
-  },
-  {
-    question: "How can I contact Joshua Biong?",
-    answer: "You can connect with Joshua through LinkedIn, Twitter, or visit his GitHub repository for collaboration opportunities. Contact links are available at the bottom of his profile."
-  },
-  {
-    question: "What is Joshua's tech stack?",
-    answer: "He primarily works with TypeScript, React, Next.js, and Tailwind CSS. He's also experienced with various frontend tools and state management libraries."
-  }
-];
+import { profileData } from '../data/profile';
 
 export default function PeopleAlsoAsk() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const renderAnswer = (answer: string) => {
+    if (answer === "contact_links") {
+      const linkedIn = profileData.socialLinks.find(l => l.platform === 'linkedin')?.url;
+      const twitter = profileData.socialLinks.find(l => l.platform === 'twitter')?.url;
+      const github = profileData.socialLinks.find(l => l.platform === 'github')?.url;
+
+      return (
+        <span>
+          You can connect with Joshua through{" "}
+          <a href={linkedIn} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-semibold">LinkedIn</a>,{" "}
+          <a href={twitter} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-semibold">Twitter</a>, or visit his{" "}
+          <a href={github} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-semibold">GitHub</a> repository for opportunities.
+        </span>
+      );
+    }
+    return answer;
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-4 pt-10 pb-20">
       <h3 className="text-2xl font-bold text-foreground mb-6">People also ask</h3>
       <div className="space-y-2 border-t border-border">
-        {faqs.map((faq, index) => (
+        {profileData.faqs.map((faq, index) => (
           <div key={index} className="border-b border-border">
             <button
               onClick={() => setActiveIndex(activeIndex === index ? null : index)}
@@ -59,9 +55,9 @@ export default function PeopleAlsoAsk() {
                 activeIndex === index ? 'max-h-40 opacity-100 pb-4' : 'max-h-0 opacity-0'
               }`}
             >
-              <p className="text-foreground-muted leading-relaxed">
-                {faq.answer}
-              </p>
+              <div className="text-foreground-muted leading-relaxed">
+                {renderAnswer(faq.answer)}
+              </div>
             </div>
           </div>
         ))}

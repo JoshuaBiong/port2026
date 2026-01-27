@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
 import { profileData } from '../data/profile';
+import { blogPosts } from '../data/blogPosts';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -230,37 +231,28 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
               </button>
           </div>
           <div className="grid grid-cols-1 gap-4">
-              <motion.div 
-                className="group cursor-pointer p-5 bg-bubble-bg border border-border rounded-xl hover:border-accent/80 hover:shadow-sm transition-all"
-                whileHover={{ y: -2 }}
-                onClick={() => onQuestionClick?.('The Learning Curve in the Age of AI', 'learning-in-age-of-ai')}
-              >
-                  <div className="flex gap-3 items-center mb-2 text-xs text-foreground-muted">
-                      <span className="px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">AI & Tech</span>
-                      <span>•</span>
-                      <span>Jan 26, 2026</span>
-                  </div>
-                  <h4 className="text-lg font-bold text-foreground mb-2 group-hover:text-accent transition-colors">The Learning Curve in the Age of AI</h4>
-                  <p className="text-sm text-foreground-muted leading-relaxed line-clamp-2">
-                      How artificial intelligence is reshaping not just how we code, but how we learn and grow as developers in the modern tech industry.
-                  </p>
-              </motion.div>
-              
-              <motion.div 
-                className="group cursor-pointer p-5 bg-bubble-bg border border-border rounded-xl hover:border-accent/80 hover:shadow-sm transition-all"
-                whileHover={{ y: -2 }}
-                onClick={() => onQuestionClick?.('Building Scalable UI Components', 'scalable-ui-components')}
-              >
-                   <div className="flex gap-3 items-center mb-2 text-xs text-foreground-muted">
-                      <span className="px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">Design Systems</span>
-                      <span>•</span>
-                      <span>Jan 15, 2026</span>
-                  </div>
-                  <h4 className="text-lg font-bold text-foreground mb-2 group-hover:text-accent transition-colors">Building Scalable UI Components</h4>
-                  <p className="text-sm text-foreground-muted leading-relaxed line-clamp-2">
-                      A deep dive into component architecture and how to create flexible, maintainable design systems for large-scale applications.
-                  </p>
-              </motion.div>
+              {profileData.featuredBlogIds.map((id) => {
+                const blog = blogPosts[id];
+                if (!blog) return null;
+                return (
+                  <motion.div 
+                    key={id}
+                    className="group cursor-pointer p-5 bg-bubble-bg border border-border rounded-xl hover:border-accent/80 hover:shadow-sm transition-all"
+                    whileHover={{ y: -2 }}
+                    onClick={() => onQuestionClick?.(blog.title, blog.id)}
+                  >
+                      <div className="flex gap-3 items-center mb-2 text-xs text-foreground-muted">
+                          <span className="px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">{blog.category}</span>
+                          <span>•</span>
+                          <span>{blog.date}</span>
+                      </div>
+                      <h4 className="text-lg font-bold text-foreground mb-2 group-hover:text-accent transition-colors">{blog.title}</h4>
+                      <p className="text-sm text-foreground-muted leading-relaxed line-clamp-2">
+                          {blog.preview}
+                      </p>
+                  </motion.div>
+                );
+              })}
           </div>
         </motion.div>
 
