@@ -256,6 +256,13 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
           </div>
         </motion.div>
 
+        {/* Bubble Question that has Books, Tech Stack or any available information I have to make the user have an idea to ask */}
+
+        <motion.div>
+          
+        </motion.div>
+
+
         {/* Connect Section */}
         <motion.div className="space-y-4 pt-4" variants={itemVariants}>
           <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Connect</h3>

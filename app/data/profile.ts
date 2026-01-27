@@ -1,5 +1,13 @@
 export const profileData = {
   name: "Joshua Biong",
+  initials: "JB",
+  metadata: {
+    title: "Joshua Biong | Software Engineer",
+    description: "Portfolio of Joshua Biong, a Software Engineer and Frontend Developer.",
+  },
+  ui: {
+    footerText: "Designed with 💙",
+  },
   suggestedQuestions: [
     "Who is Joshua Biong?",
     "What does he do at Devignlabs?",
@@ -115,12 +123,14 @@ export const profileData = {
     ]
   },
   techStack: [
-    { category: "Core", items: ["TypeScript", "JavaScript (ES6+)", "HTML5", "CSS3"] },
-    { category: "Frameworks", items: ["React.js", "Next.js", "Vue.js"] },
+    { category: "Core", items: ["TypeScript", "JavaScript (ES6+)", "HTML5", "CSS3", "Swift"]},
+    { category: "Frameworks", items: ["React.js", "Next.js", "Vue.js", "Nuxt.js", "Laravel", "Inertia.js"] },
     { category: "Styling", items: ["Tailwind CSS", "Framer Motion", "SASS/SCSS", "Shadcn UI"] },
-    { category: "Tools", items: ["Git/GitHub", "Figma", "Vercel", "VS Code"] },
+    { category: "Tools", items: ["Git/GitHub", "Figma", "Vercel", "VS Code", "Antigravity", "Claude Code", "Cursor"] }
   ],
   techStackQuote: "I believe in choosing the right tool for the job, prioritizing performance, accessibility, and developer experience.",
+
+
   faqs: [
     {
       question: "What does Joshua Biong do?",

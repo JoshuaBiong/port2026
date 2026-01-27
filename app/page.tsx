@@ -302,7 +302,7 @@ export default function Home() {
       {/* Footer */}
       {!hasConversation && (
         <footer className="hidden md:block py-4 text-center text-xs text-foreground-muted">
-          Designed with 💙
+          {profileData.ui.footerText}
         </footer>
       )}
     </div>
