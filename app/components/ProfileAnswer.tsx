@@ -188,23 +188,30 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
         <motion.div className="space-y-4" variants={itemVariants}>
           <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Featured Projects</h3>
           <div className="grid grid-cols-2 gap-4">
-            {[1, 2, 3].map((i, index) => (
+            {profileData.projects.slice(0, 3).map((project, index) => (
               <motion.div
-                key={i}
+                key={index}
                 className={`group p-4 rounded-xl border border-dashed border-border hover:border-accent hover:bg-background-secondary transition-all cursor-pointer ${index === 0 ? 'col-span-2' : 'col-span-1'}`}
                 variants={itemVariants}
+                onClick={() => onQuestionClick?.('projects')}
               >
                 <div className={`w-full bg-bubble-bg rounded-lg mb-3 flex items-center justify-center relative overflow-hidden ${index === 0 ? 'aspect-[21/9]' : 'aspect-video'}`}>
-                  <ImageSkeleton />
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-foreground-muted opacity-30 group-hover:opacity-100 group-hover:text-accent transition-opacity relative z-10"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  {project.image ? (
+                    <img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                    />
+                  ) : (
+                    <ImageSkeleton />
+                  )}
+                  {!project.image && <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-foreground-muted opacity-30 group-hover:opacity-100 group-hover:text-accent transition-opacity relative z-10"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>}
                 </div>
-                <h4 className="font-medium text-foreground mb-1 italic opacity-60">
-                  {index === 0 ? 'Flagship Project (Coming Soon)' : `Project ${i} (Coming Soon)`}
+                <h4 className="font-bold text-foreground mb-1">
+                  {project.title}
                 </h4>
-                <p className="text-sm text-foreground-muted">
-                  {index === 0 
-                    ? 'A deep dive into my most ambitious work yet, focusing on performance and scale.' 
-                    : 'Innovative solution built with modern technologies.'}
+                <p className="text-sm text-foreground-muted line-clamp-2">
+                  {project.description}
                 </p>
               </motion.div>
             ))}

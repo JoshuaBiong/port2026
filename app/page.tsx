@@ -9,14 +9,11 @@ import TechStackAnswer from "./components/TechStackAnswer";
 import ProjectsAnswer from "./components/ProjectsAnswer";
 import BlogAnswer from "./components/BlogAnswer";
 import BlogPostAnswer from "./components/BlogPostAnswer";
+import BookRecommendationsAnswer from "./components/BookRecommendationsAnswer";
 
-const suggestedQuestions = [
-  "Who is Joshua Biong?",
-  "What does he do at Devignlabs?",
-  "What projects is he working on?",
-];
+import { profileData } from "./data/profile";
 
-type MessageType = 'question' | 'answer' | 'text-answer' | 'devignlabs-answer' | 'tech-stack-answer' | 'projects-answer' | 'blog-answer' | 'blog-post-answer';
+type MessageType = 'question' | 'answer' | 'text-answer' | 'devignlabs-answer' | 'tech-stack-answer' | 'projects-answer' | 'blog-answer' | 'blog-post-answer' | 'book-recommendation';
 
 interface Message {
   type: MessageType;
@@ -82,6 +79,9 @@ export default function Home() {
        answerContent = 'tailwind-conquered-web';
     } else if (lowerQuestion.includes('contact')) {
        answerContent = "You can contact Joshua via LinkedIn, Twitter, or GitHub. Check the links in his profile!";
+    } else if (lowerQuestion.includes('book') || lowerQuestion.includes('recommendation') || lowerQuestion.includes('reading')) {
+        answerType = 'book-recommendation';
+        answerContent = 'books';
     }
 
     if (answerType === 'blog-post-answer') {
@@ -125,7 +125,7 @@ export default function Home() {
             
             {/* Desktop-only Suggetions Centered */}
             <div className="hidden md:flex flex-wrap gap-3 justify-center max-w-2xl mb-8">
-              {suggestedQuestions.map((question, index) => (
+              {profileData.suggestedQuestions.map((question: string, index: number) => (
                 <button
                   key={index}
                   onClick={() => handleQuestionClick(question)}
@@ -140,7 +140,7 @@ export default function Home() {
             <div className="w-full max-w-2xl md:relative fixed bottom-0 left-0 right-0 p-6 md:p-0 md:static bg-gradient-to-t from-background via-background to-transparent md:bg-none z-20">
               {/* Mobile suggestions directly above input */}
               <div className="flex overflow-x-auto gap-2 mb-4 md:hidden no-scrollbar pb-2">
-                {suggestedQuestions.map((question, index) => (
+                {profileData.suggestedQuestions.map((question: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => handleQuestionClick(question)}
@@ -229,6 +229,11 @@ export default function Home() {
                   ) : msg.type === 'blog-post-answer' ? (
                     <div className="space-y-8 mb-12">
                       <BlogPostAnswer postId={msg.content} onQuestionClick={handleQuestionClick} />
+                      <PeopleAlsoAsk />
+                    </div>
+                  ) : msg.type === 'book-recommendation' ? (
+                    <div className="space-y-8 mb-12">
+                      <BookRecommendationsAnswer />
                       <PeopleAlsoAsk />
                     </div>
                   ) : (
