@@ -187,7 +187,7 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
 
         {/* Projects Section - Redesigned Layout */}
         <motion.div className="space-y-4" variants={itemVariants}>
-          <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Featured Projects</h3>
+          <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Featured Personal Projects</h3>
           <div className="grid grid-cols-2 gap-4">
             {profileData.projects.slice(0, 3).map((project, index) => (
               <motion.div

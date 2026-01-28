@@ -27,6 +27,7 @@ export const profileData = {
       description: "Building custom solutions for early-stage startups and creative businesses."
     }
   ],
+  
   socialLinks: [
     {
       label: "LinkedIn",
@@ -60,6 +61,7 @@ export const profileData = {
     { url: '/me/forrest.avif', label: 'Joshua Biong - Lifestyle and Outdoor Photography in Forrest' },
     { url: '/me/hoddie%20gray.avif', label: 'Joshua Biong - Software Engineer and Frontend Developer Portrait' },
   ],
+
   recommendedBooks: [
     {
       title: "Clean Code",

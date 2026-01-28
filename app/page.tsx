@@ -12,6 +12,7 @@ import BlogPostAnswer from "./components/BlogPostAnswer";
 import BookRecommendationsAnswer from "./components/BookRecommendationsAnswer";
 
 import { profileData } from "./data/profile";
+import { blogList } from "./data/blogPosts";
 
 type MessageType = 'question' | 'answer' | 'text-answer' | 'devignlabs-answer' | 'tech-stack-answer' | 'projects-answer' | 'blog-answer' | 'blog-post-answer' | 'book-recommendation';
 
@@ -26,6 +27,7 @@ export default function Home() {
   const [isFocused, setIsFocused] = useState(false);
   const isActive = isFocused || inputValue.length > 0;
   const [isLoading, setIsLoading] = useState(false);
+  const [fallbackCount, setFallbackCount] = useState(0);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastQuestionRef = useRef<HTMLDivElement>(null);
@@ -44,6 +46,28 @@ export default function Home() {
     }
   }, [messages, isLoading]);
 
+  const renderMessageContent = (content: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = content.split(urlRegex);
+    
+    return parts.map((part, i) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a 
+            key={i} 
+            href={part} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-accent hover:underline break-all font-medium"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
+
   const handleQuestionClick = (question: string, id?: string) => {
     setIsLoading(true);
     setMessages(prev => [...prev, { type: 'question', content: question }]);
@@ -53,35 +77,76 @@ export default function Home() {
     let answerType: MessageType = 'text-answer';
     let answerContent = "I am designed to provide accurate information based on the data I have been given. My information about Joshua Biong is drawn directly from the details you provided. Can I help clarify anything else about him?";
 
-    if (lowerQuestion.includes('who is joshua') || lowerQuestion === 'who is joshua biong?') {
+    if (lowerQuestion.includes('who is joshua') ||
+     lowerQuestion === 'who is joshua biong?' ||
+     lowerQuestion === 'joshua biong') {
        answerType = 'answer';
        answerContent = 'profile';
     } else if (lowerQuestion.includes('devignlabs')) {
        answerType = 'devignlabs-answer';
        answerContent = 'devignlabs';
-    } else if (lowerQuestion.includes('tech stack') || lowerQuestion.includes('technologies')) {
+    } else if (lowerQuestion.includes('tech stack') || 
+    lowerQuestion.includes('technologies') ||
+    lowerQuestion.includes('tech stack')) {
        answerType = 'tech-stack-answer';
        answerContent = 'tech-stack';
-    } else if (lowerQuestion.includes('projects') || lowerQuestion.includes('work')) {
+    } else if (lowerQuestion.includes('projects') || 
+    lowerQuestion.includes('personal projects')|| 
+    lowerQuestion.includes("projects")) {
        answerType = 'projects-answer';
        answerContent = 'projects';
-    } else if (lowerQuestion.includes('blog') || lowerQuestion.includes('writings') || lowerQuestion.includes('articles')) {
+    } else if (lowerQuestion.includes('blog') || 
+    lowerQuestion.includes('writings') || 
+    lowerQuestion.includes('articles')) {
        answerType = 'blog-answer';
        answerContent = 'blog';
-    } else if (lowerQuestion.includes('learning curve') || lowerQuestion.includes('age of ai')) {
-       answerType = 'blog-post-answer';
-       answerContent = 'learning-in-age-of-ai'; 
-    } else if (lowerQuestion.includes('scalable ui') || lowerQuestion.includes('ui components') || lowerQuestion.includes('scalable')) {
-       answerType = 'blog-post-answer';
-       answerContent = 'scalable-ui-components';
-    } else if (lowerQuestion.includes('tailwind') || lowerQuestion.includes('css')) {
-       answerType = 'blog-post-answer';
-       answerContent = 'tailwind-conquered-web';
-    } else if (lowerQuestion.includes('contact')) {
-       answerContent = "You can contact Joshua via LinkedIn, Twitter, or GitHub. Check the links in his profile!";
-    } else if (lowerQuestion.includes('book') || lowerQuestion.includes('recommendation') || lowerQuestion.includes('reading')) {
-        answerType = 'book-recommendation';
-        answerContent = 'books';
+    } else {
+        // Dynamic Blog Post Check
+        // 1. First, look for an exact or very close title match (prioritize this)
+        let matchedBlog = blogList.find(blog => 
+            blog.title.toLowerCase() === lowerQuestion ||
+            lowerQuestion.includes(blog.title.toLowerCase())
+        );
+
+        // 2. If no direct title match, try keyword matching but with stricter boundaries
+        if (!matchedBlog) {
+            matchedBlog = blogList.find(blog => {
+                const blogTitleLower = blog.title.toLowerCase();
+                const keywords = blogTitleLower.split(' ').filter(w => w.length > 3);
+                
+                // Check if any of the blog's unique keywords appear as whole words in the question
+                // or if the unique keywords are significant enough
+                return keywords.some(k => {
+                    const regex = new RegExp(`\\b${k}\\b`, 'i');
+                    return regex.test(lowerQuestion);
+                });
+            });
+        }
+
+        if (matchedBlog) {
+            answerType = 'blog-post-answer';
+            answerContent = matchedBlog.id;
+        } else if (lowerQuestion.includes('contact')) {
+            answerContent = "You can contact Joshua via LinkedIn, Twitter, or GitHub. Check the links in his profile!";
+        } else if (lowerQuestion.includes('book') || lowerQuestion.includes('recommendation') || lowerQuestion.includes('reading')) {
+             answerType = 'book-recommendation';
+             answerContent = 'books';
+        }
+    }
+
+    // Determine if we're showing the default fallback answer
+    const defaultFallback = "I am designed to provide accurate information based on the data I have been given. My information about Joshua Biong is drawn directly from the details you provided. Can I help clarify anything else about him?";
+    const isShowingFallback = answerType === 'text-answer' && answerContent === defaultFallback;
+
+    if (isShowingFallback) {
+      const nextCount = fallbackCount + 1;
+      setFallbackCount(nextCount);
+
+      // Every 3rd time (3, 6, 9...), show LinkedIn recommendation
+      if (nextCount % 3 === 0) {
+        const linkedinUrl = profileData.socialLinks.find(link => link.platform === 'linkedin')?.url || 'https://linkedin.com/in/joshuabiong';
+        answerContent = `I've shared a lot already! If you have more specific questions or want to connect, feel free to reach out to me directly on LinkedIn: ${linkedinUrl}`;
+      }
     }
 
     if (answerType === 'blog-post-answer') {
@@ -243,7 +308,7 @@ export default function Home() {
                           <span className="font-bold text-xs">AI</span>
                         </div>
                         <div className="bg-bubble-bg text-foreground px-5 py-4 rounded-2xl text-base leading-relaxed border border-border">
-                          {msg.content}
+                          {renderMessageContent(msg.content)}
                         </div>
                       </div>
                     </div>
