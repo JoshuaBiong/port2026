@@ -9,14 +9,12 @@ import TechStackAnswer from "./components/TechStackAnswer";
 import ProjectsAnswer from "./components/ProjectsAnswer";
 import BlogAnswer from "./components/BlogAnswer";
 import BlogPostAnswer from "./components/BlogPostAnswer";
+import BookRecommendationsAnswer from "./components/BookRecommendationsAnswer";
 
-const suggestedQuestions = [
-  "Who is Joshua Biong?",
-  "What does he do at Devignlabs?",
-  "What projects is he working on?",
-];
+import { profileData } from "./data/profile";
+import { blogList } from "./data/blogPosts";
 
-type MessageType = 'question' | 'answer' | 'text-answer' | 'devignlabs-answer' | 'tech-stack-answer' | 'projects-answer' | 'blog-answer' | 'blog-post-answer';
+type MessageType = 'question' | 'answer' | 'text-answer' | 'devignlabs-answer' | 'tech-stack-answer' | 'projects-answer' | 'blog-answer' | 'blog-post-answer' | 'book-recommendation';
 
 interface Message {
   type: MessageType;
@@ -29,6 +27,7 @@ export default function Home() {
   const [isFocused, setIsFocused] = useState(false);
   const isActive = isFocused || inputValue.length > 0;
   const [isLoading, setIsLoading] = useState(false);
+  const [fallbackCount, setFallbackCount] = useState(0);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastQuestionRef = useRef<HTMLDivElement>(null);
@@ -47,6 +46,28 @@ export default function Home() {
     }
   }, [messages, isLoading]);
 
+  const renderMessageContent = (content: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = content.split(urlRegex);
+    
+    return parts.map((part, i) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a 
+            key={i} 
+            href={part} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-accent hover:underline break-all font-medium"
+          >
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
+
   const handleQuestionClick = (question: string, id?: string) => {
     setIsLoading(true);
     setMessages(prev => [...prev, { type: 'question', content: question }]);
@@ -56,32 +77,76 @@ export default function Home() {
     let answerType: MessageType = 'text-answer';
     let answerContent = "I am designed to provide accurate information based on the data I have been given. My information about Joshua Biong is drawn directly from the details you provided. Can I help clarify anything else about him?";
 
-    if (lowerQuestion.includes('who is joshua') || lowerQuestion === 'who is joshua biong?') {
+    if (lowerQuestion.includes('who is joshua') ||
+     lowerQuestion === 'who is joshua biong?' ||
+     lowerQuestion === 'joshua biong') {
        answerType = 'answer';
        answerContent = 'profile';
     } else if (lowerQuestion.includes('devignlabs')) {
        answerType = 'devignlabs-answer';
        answerContent = 'devignlabs';
-    } else if (lowerQuestion.includes('tech stack') || lowerQuestion.includes('technologies')) {
+    } else if (lowerQuestion.includes('tech stack') || 
+    lowerQuestion.includes('technologies') ||
+    lowerQuestion.includes('tech stack')) {
        answerType = 'tech-stack-answer';
        answerContent = 'tech-stack';
-    } else if (lowerQuestion.includes('projects') || lowerQuestion.includes('work')) {
+    } else if (lowerQuestion.includes('projects') || 
+    lowerQuestion.includes('personal projects')|| 
+    lowerQuestion.includes("projects")) {
        answerType = 'projects-answer';
        answerContent = 'projects';
-    } else if (lowerQuestion.includes('blog') || lowerQuestion.includes('writings') || lowerQuestion.includes('articles')) {
+    } else if (lowerQuestion.includes('blog') || 
+    lowerQuestion.includes('writings') || 
+    lowerQuestion.includes('articles')) {
        answerType = 'blog-answer';
        answerContent = 'blog';
-    } else if (lowerQuestion.includes('learning curve') || lowerQuestion.includes('age of ai')) {
-       answerType = 'blog-post-answer';
-       answerContent = 'learning-in-age-of-ai'; 
-    } else if (lowerQuestion.includes('scalable ui') || lowerQuestion.includes('ui components') || lowerQuestion.includes('scalable')) {
-       answerType = 'blog-post-answer';
-       answerContent = 'scalable-ui-components';
-    } else if (lowerQuestion.includes('tailwind') || lowerQuestion.includes('css')) {
-       answerType = 'blog-post-answer';
-       answerContent = 'tailwind-conquered-web';
-    } else if (lowerQuestion.includes('contact')) {
-       answerContent = "You can contact Joshua via LinkedIn, Twitter, or GitHub. Check the links in his profile!";
+    } else {
+        // Dynamic Blog Post Check
+        // 1. First, look for an exact or very close title match (prioritize this)
+        let matchedBlog = blogList.find(blog => 
+            blog.title.toLowerCase() === lowerQuestion ||
+            lowerQuestion.includes(blog.title.toLowerCase())
+        );
+
+        // 2. If no direct title match, try keyword matching but with stricter boundaries
+        if (!matchedBlog) {
+            matchedBlog = blogList.find(blog => {
+                const blogTitleLower = blog.title.toLowerCase();
+                const keywords = blogTitleLower.split(' ').filter(w => w.length > 3);
+                
+                // Check if any of the blog's unique keywords appear as whole words in the question
+                // or if the unique keywords are significant enough
+                return keywords.some(k => {
+                    const regex = new RegExp(`\\b${k}\\b`, 'i');
+                    return regex.test(lowerQuestion);
+                });
+            });
+        }
+
+        if (matchedBlog) {
+            answerType = 'blog-post-answer';
+            answerContent = matchedBlog.id;
+        } else if (lowerQuestion.includes('contact')) {
+            answerContent = "You can contact Joshua via LinkedIn, Twitter, or GitHub. Check the links in his profile!";
+        } else if (lowerQuestion.includes('book') || lowerQuestion.includes('recommendation') || lowerQuestion.includes('reading')) {
+             answerType = 'book-recommendation';
+             answerContent = 'books';
+        }
+    }
+
+    // Determine if we're showing the default fallback answer
+    const defaultFallback = "I am designed to provide accurate information based on the data I have been given. My information about Joshua Biong is drawn directly from the details you provided. Can I help clarify anything else about him?";
+    const isShowingFallback = answerType === 'text-answer' && answerContent === defaultFallback;
+
+    if (isShowingFallback) {
+      const nextCount = fallbackCount + 1;
+      setFallbackCount(nextCount);
+
+      // Every 3rd time (3, 6, 9...), show LinkedIn recommendation
+      if (nextCount % 3 === 0) {
+        const linkedinUrl = profileData.socialLinks.find(link => link.platform === 'linkedin')?.url || 'https://linkedin.com/in/joshuabiong';
+        answerContent = `I've shared a lot already! If you have more specific questions or want to connect, feel free to reach out to me directly on LinkedIn: ${linkedinUrl}`;
+      }
     }
 
     if (answerType === 'blog-post-answer') {
@@ -125,7 +190,7 @@ export default function Home() {
             
             {/* Desktop-only Suggetions Centered */}
             <div className="hidden md:flex flex-wrap gap-3 justify-center max-w-2xl mb-8">
-              {suggestedQuestions.map((question, index) => (
+              {profileData.suggestedQuestions.map((question: string, index: number) => (
                 <button
                   key={index}
                   onClick={() => handleQuestionClick(question)}
@@ -140,7 +205,7 @@ export default function Home() {
             <div className="w-full max-w-2xl md:relative fixed bottom-0 left-0 right-0 p-6 md:p-0 md:static bg-gradient-to-t from-background via-background to-transparent md:bg-none z-20">
               {/* Mobile suggestions directly above input */}
               <div className="flex overflow-x-auto gap-2 mb-4 md:hidden no-scrollbar pb-2">
-                {suggestedQuestions.map((question, index) => (
+                {profileData.suggestedQuestions.map((question: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => handleQuestionClick(question)}
@@ -231,14 +296,21 @@ export default function Home() {
                       <BlogPostAnswer postId={msg.content} onQuestionClick={handleQuestionClick} />
                       <PeopleAlsoAsk />
                     </div>
+                  ) : msg.type === 'book-recommendation' ? (
+                    <div className="space-y-8 mb-12">
+                      <BookRecommendationsAnswer />
+                      <PeopleAlsoAsk />
+                    </div>
                   ) : (
                     <div className="flex justify-start mb-12">
                       <div className="flex gap-4 max-w-2xl">
-                        <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white shrink-0 mt-1">
-                          <span className="font-bold text-xs">AI</span>
+                        <div className="w-8 h-8 rounded-full  flex items-center justify-center text-white shrink-0 mt-1">
+                          <span className="font-bold text-xs">
+                            <img src="/icon.png" alt="Joshua Biong" />
+                          </span>
                         </div>
                         <div className="bg-bubble-bg text-foreground px-5 py-4 rounded-2xl text-base leading-relaxed border border-border">
-                          {msg.content}
+                          {renderMessageContent(msg.content)}
                         </div>
                       </div>
                     </div>
@@ -297,7 +369,7 @@ export default function Home() {
       {/* Footer */}
       {!hasConversation && (
         <footer className="hidden md:block py-4 text-center text-xs text-foreground-muted">
-          Designed with 💙
+          {profileData.ui.footerText}
         </footer>
       )}
     </div>

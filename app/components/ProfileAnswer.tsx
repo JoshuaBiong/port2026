@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
 import { profileData } from '../data/profile';
+import { blogPosts } from '../data/blogPosts';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -96,7 +97,7 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
   return (
     <>
       <motion.div
-        className="w-full max-w-2xl mx-auto space-y-8 py-6"
+        className="w-full max-w-2xl mx-auto h-auto space-y-8 py-6"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -186,25 +187,32 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
 
         {/* Projects Section - Redesigned Layout */}
         <motion.div className="space-y-4" variants={itemVariants}>
-          <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Featured Projects</h3>
+          <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Featured Personal Projects</h3>
           <div className="grid grid-cols-2 gap-4">
-            {[1, 2, 3].map((i, index) => (
+            {profileData.projects.slice(0, 3).map((project, index) => (
               <motion.div
-                key={i}
+                key={index}
                 className={`group p-4 rounded-xl border border-dashed border-border hover:border-accent hover:bg-background-secondary transition-all cursor-pointer ${index === 0 ? 'col-span-2' : 'col-span-1'}`}
                 variants={itemVariants}
+                onClick={() => onQuestionClick?.('projects')}
               >
                 <div className={`w-full bg-bubble-bg rounded-lg mb-3 flex items-center justify-center relative overflow-hidden ${index === 0 ? 'aspect-[21/9]' : 'aspect-video'}`}>
-                  <ImageSkeleton />
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-foreground-muted opacity-30 group-hover:opacity-100 group-hover:text-accent transition-opacity relative z-10"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  {project.image ? (
+                    <img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                    />
+                  ) : (
+                    <ImageSkeleton />
+                  )}
+                  {!project.image && <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-foreground-muted opacity-30 group-hover:opacity-100 group-hover:text-accent transition-opacity relative z-10"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>}
                 </div>
-                <h4 className="font-medium text-foreground mb-1 italic opacity-60">
-                  {index === 0 ? 'Flagship Project (Coming Soon)' : `Project ${i} (Coming Soon)`}
+                <h4 className="font-bold text-foreground mb-1">
+                  {project.title}
                 </h4>
-                <p className="text-sm text-foreground-muted">
-                  {index === 0 
-                    ? 'A deep dive into my most ambitious work yet, focusing on performance and scale.' 
-                    : 'Innovative solution built with modern technologies.'}
+                <p className="text-sm text-foreground-muted line-clamp-2">
+                  {project.description}
                 </p>
               </motion.div>
             ))}
@@ -223,42 +231,60 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
               </button>
           </div>
           <div className="grid grid-cols-1 gap-4">
-              <motion.div 
-                className="group cursor-pointer p-5 bg-bubble-bg border border-border rounded-xl hover:border-accent/80 hover:shadow-sm transition-all"
-                whileHover={{ y: -2 }}
-                onClick={() => onQuestionClick?.('The Learning Curve in the Age of AI', 'learning-in-age-of-ai')}
-              >
-                  <div className="flex gap-3 items-center mb-2 text-xs text-foreground-muted">
-                      <span className="px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">AI & Tech</span>
-                      <span>•</span>
-                      <span>Jan 26, 2026</span>
-                  </div>
-                  <h4 className="text-lg font-bold text-foreground mb-2 group-hover:text-accent transition-colors">The Learning Curve in the Age of AI</h4>
-                  <p className="text-sm text-foreground-muted leading-relaxed line-clamp-2">
-                      How artificial intelligence is reshaping not just how we code, but how we learn and grow as developers in the modern tech industry.
-                  </p>
-              </motion.div>
-              
-              <motion.div 
-                className="group cursor-pointer p-5 bg-bubble-bg border border-border rounded-xl hover:border-accent/80 hover:shadow-sm transition-all"
-                whileHover={{ y: -2 }}
-                onClick={() => onQuestionClick?.('Building Scalable UI Components', 'scalable-ui-components')}
-              >
-                   <div className="flex gap-3 items-center mb-2 text-xs text-foreground-muted">
-                      <span className="px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">Design Systems</span>
-                      <span>•</span>
-                      <span>Jan 15, 2026</span>
-                  </div>
-                  <h4 className="text-lg font-bold text-foreground mb-2 group-hover:text-accent transition-colors">Building Scalable UI Components</h4>
-                  <p className="text-sm text-foreground-muted leading-relaxed line-clamp-2">
-                      A deep dive into component architecture and how to create flexible, maintainable design systems for large-scale applications.
-                  </p>
-              </motion.div>
+              {profileData.featuredBlogIds.map((id) => {
+                const blog = blogPosts[id];
+                if (!blog) return null;
+                return (
+                  <motion.div 
+                    key={id}
+                    className="group cursor-pointer p-5 bg-bubble-bg border border-border rounded-xl hover:border-accent/80 hover:shadow-sm transition-all"
+                    whileHover={{ y: -2 }}
+                    onClick={() => onQuestionClick?.(blog.title, blog.id)}
+                  >
+                      <div className="flex gap-3 items-center mb-2 text-xs text-foreground-muted">
+                          <span className="px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">{blog.category}</span>
+                          <span>•</span>
+                          <span>{blog.date}</span>
+                      </div>
+                      <h4 className="text-lg font-bold text-foreground mb-2 group-hover:text-accent transition-colors">{blog.title}</h4>
+                      <p className="text-sm text-foreground-muted leading-relaxed line-clamp-2">
+                          {blog.preview}
+                      </p>
+                  </motion.div>
+                );
+              })}
           </div>
         </motion.div>
 
+
+           {/* Follow-up Suggestions */}
+        <motion.div 
+          className="space-y-4 pt-2  "
+          variants={itemVariants}
+        >
+          <p className="text-xs font-bold uppercase tracking-widest text-foreground-muted ml-0.5">Explore more</p>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+            {[
+              "What's in his tech stack?",
+              "Show me his projects",
+              "What books does he recommend?",
+              "Tell me more about Devignlabs"
+            ].map((question, i) => (
+              <button
+                key={i}
+                onClick={() => onQuestionClick?.(question)}
+                className="whitespace-nowrap px-4 py-2 rounded-full border border-border bg-bubble-bg text-sm font-medium text-foreground hover:border-accent/40 hover:bg-bubble-hover transition-all active:scale-95 shrink-0"
+              >
+                {question}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+     
+
+
         {/* Connect Section */}
-        <motion.div className="space-y-4 pt-4" variants={itemVariants}>
+        <motion.div className="space-y-4 pt-4 " variants={itemVariants}>
           <h3 className="text-xl font-semibold text-foreground border-b border-border pb-2">Connect</h3>
           <div className="flex flex-wrap gap-4">
             {profileData.socialLinks.map((link, index) => (
@@ -272,7 +298,10 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
                     whileTap={{ scale: 0.95 }}
                 >
                     {link.platform === 'linkedin' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>}
-                    {link.platform === 'twitter' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>}
+                    {link.platform === 'twitter' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768m2.464-2.464L20 4"/></svg>}
+                    {link.platform === 'threads' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19.25 20.25c-2.415 1.57-5.594 1.777-7.25.25-1.656-1.527-1.85-4.708-2.625-5.25C8.6 14.7 7.7 15.5 7.7 18.2c0 2.2 1.5 3.1 3.2 3.1 1.6 0 3.3-1.1 3.3-3.1 0-2.4-1.7-3.9-3.7-3.9-2.3 0-3.9 1.5-3.9 3.9 0 2.1 1.4 3.7 3.5 3.7 1.5 0 2.8-.8 3.3-2.1"/><path d="M2.5 12.5c0-5.247 4.253-9.5 9.5-9.5s9.5 4.253 9.5 9.5c0 5.246-4.253 9.5-9.5 9.5-2.023 0-3.896-.632-5.432-1.714"/></svg>}
+                    {link.platform === 'facebook' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>}
+                    {link.platform === 'instagram' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>}
                     {link.platform === 'github' && <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>}
                     {link.label}
                 </motion.a>

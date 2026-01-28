@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { profileData } from '../data/profile';
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -10,13 +11,6 @@ const itemVariants = {
     transition: { duration: 0.5, ease: 'easeOut' as const },
   },
 };
-
-const stack = [
-  { category: "Core", items: ["TypeScript", "JavaScript (ES6+)", "HTML5", "CSS3"] },
-  { category: "Frameworks", items: ["React.js", "Next.js", "Vue.js"] },
-  { category: "Styling", items: ["Tailwind CSS", "Framer Motion", "SASS/SCSS", "Shadcn UI"] },
-  { category: "Tools", items: ["Git/GitHub", "Figma", "Vercel", "VS Code"] },
-];
 
 export default function TechStackAnswer() {
   return (
@@ -32,7 +26,7 @@ export default function TechStackAnswer() {
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {stack.map((group, index) => (
+        {profileData.techStack.map((group, index) => (
           <motion.div 
             key={index} 
             variants={itemVariants}
@@ -53,8 +47,8 @@ export default function TechStackAnswer() {
         ))}
       </div>
       
-      <motion.div variants={itemVariants} className="bg-background-secondary rounded-xl p-4 border border-border text-sm text-foreground-muted italic">
-        "I believe in choosing the right tool for the job, prioritizing performance, accessibility, and developer experience."
+      <motion.div variants={itemVariants} className="bg-background-secondary rounded-xl p-4 border border-border text-sm text-foreground-muted italic text-center">
+        "{profileData.techStackQuote}"
       </motion.div>
     </motion.div>
   );

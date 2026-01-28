@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { profileData } from '../data/profile';
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -21,23 +22,19 @@ export default function DevignlabsAnswer() {
     >
       <motion.div variants={itemVariants} className="space-y-2">
         <h1 className="text-3xl font-bold text-foreground">Devignlabs</h1>
-        <p className="text-lg text-foreground-muted">Innovative Web Development Agency</p>
+        <p className="text-lg text-foreground-muted">{profileData.devignlabs.tagline}</p>
       </motion.div>
 
       <motion.div variants={itemVariants} className="bg-bubble-bg rounded-2xl p-6 border border-border">
-        <p className="text-foreground leading-relaxed mb-4">
-          <strong>Devignlabs</strong> is a forward-thinking web development agency where Joshua currently serves as a <strong>Frontend Developer</strong>.
-          The company specializes in crafting high-fidelity design systems and building scalable web applications for modern businesses.
-        </p>
         <p className="text-foreground leading-relaxed">
-          At Devignlabs, the focus is on bridging the gap between cutting-edge design and robust engineering, ensuring every product is not just functional but also visually stunning.
+          {profileData.devignlabs.description}
         </p>
       </motion.div>
       
       <motion.div variants={itemVariants}>
         <h3 className="text-lg font-semibold text-foreground mb-3">Key Focus Areas</h3>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {['Design Systems', 'React & Next.js', 'Performance Optimization', 'Modern UI/UX'].map((item, i) => (
+          {profileData.devignlabs.focus.map((item, i) => (
             <li key={i} className="flex items-center gap-2 bg-background border border-border px-3 py-2 rounded-lg text-sm text-foreground-muted">
               <div className="w-1.5 h-1.5 rounded-full bg-accent" />
               {item}
