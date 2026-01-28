@@ -14,7 +14,7 @@ export const profileData = {
     "What books does he recommend?",
   ],
   title: "Software Engineer + Frontend Developer",
-  bio: "is a **Software Engineer** dedicated to building high-performance web applications. By profession, he excels in **Frontend Development**, leveraging modern technologies to craft seamless user experiences. Outside of his professional scope, he is a passionate **Shopify Developer** and an active **iOS hobbyist**, constantly pushing the boundaries of e-commerce and mobile innovation.",
+  bio: "is a **Software Engineer** dedicated to building **high-performance web applications**. He specializes in **Frontend Development**, leveraging modern technologies to craft **seamless user experiences**. Beyond his professional work, he is a passionate **Shopify Developer** and an active **iOS hobbyist**, constantly pushing the boundaries of **e-commerce** and **mobile innovation**.",
   roles: [
     {
       company: "Devignlabs",

@@ -87,12 +87,15 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
     return () => { document.body.style.overflow = 'unset'; };
   }, [selectedImageIndex]);
 
-  // Update current slide index when modal opens
-  useEffect(() => {
-    if (selectedImageIndex !== null) {
-      setCurrentSlideIndex(selectedImageIndex);
-    }
-  }, [selectedImageIndex]);
+  const renderWithBold = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i} className="font-bold text-foreground">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
 
   return (
     <>
@@ -165,7 +168,7 @@ export default function ProfileAnswer({ onQuestionClick }: ProfileAnswerProps) {
         {/* Bio Section */}
         <motion.div className="space-y-4" variants={itemVariants}>
           <p className="text-foreground leading-relaxed">
-            <strong>{profileData.name}</strong> {profileData.bio}
+            <strong className="font-bold text-foreground">{profileData.name}</strong> {renderWithBold(profileData.bio)}
           </p>
         </motion.div>
 
