@@ -14,7 +14,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const post = blogPosts[params.slug];
+  const { slug } = await params;
+  const post = blogPosts[slug];
   
   if (!post) {
     return {
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: post.title,
       description: post.preview,
       type: 'article',
-      publishedTime: post.date, // Note: date string 'Jan 26, 2026' might need parsing for strict ISO, but good enough for now
+      publishedTime: post.date,
       authors: ['Joshua Biong'],
     },
     twitter: {
@@ -40,8 +41,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function BlogPostPage({ params }: PageProps) {
-  const post = blogPosts[params.slug];
+export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params;
+  const post = blogPosts[slug];
 
   if (!post) {
     notFound();
