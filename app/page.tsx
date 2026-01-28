@@ -304,8 +304,10 @@ export default function Home() {
                   ) : (
                     <div className="flex justify-start mb-12">
                       <div className="flex gap-4 max-w-2xl">
-                        <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white shrink-0 mt-1">
-                          <span className="font-bold text-xs">AI</span>
+                        <div className="w-8 h-8 rounded-full  flex items-center justify-center text-white shrink-0 mt-1">
+                          <span className="font-bold text-xs">
+                            <img src="/icon.png" alt="Joshua Biong" />
+                          </span>
                         </div>
                         <div className="bg-bubble-bg text-foreground px-5 py-4 rounded-2xl text-base leading-relaxed border border-border">
                           {renderMessageContent(msg.content)}
